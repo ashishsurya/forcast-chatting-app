@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import supabase from '../supabase';
 import MessageBubble from './MessageBubble';
 import { IMessage } from '../typings';
@@ -8,6 +8,8 @@ const ChatWindow: React.FC<{
   messages: IMessage[];
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
 }> = ({ roomId, messages, setMessages }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const channel = supabase
       .channel('supabase_relatime')
@@ -30,13 +32,20 @@ const ChatWindow: React.FC<{
     };
   }, [supabase, setMessages, roomId]);
 
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
-    <div className=' flex-1 rounded-lg w-full'>
-      <div className='  h-full overflow-y-scroll  flex flex-col space-y-3  justify-end py-3  px-3'>
+    <div className='overflow-y-scroll flex-1  flex-col rounded-lg w-full pb-16 '>
+      <div className='    flex flex-col space-y-3   justify-end py-3  px-3 '>
         {messages?.map((msg) => (
           <MessageBubble message={msg} key={msg.id} />
         ))}
       </div>
+      <div ref={scrollContainerRef}></div>
     </div>
   );
 };

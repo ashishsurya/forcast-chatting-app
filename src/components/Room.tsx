@@ -3,6 +3,7 @@ import supabase from '../supabase';
 import { IMessage } from '../typings';
 import ChatInput from './ChatInput';
 import ChatWindow from './ChatWindow';
+import ChatHeader from './ChatHeader';
 
 const Room: React.FC<{
   roomId: string | null;
@@ -24,17 +25,18 @@ const Room: React.FC<{
     getRoomMessages();
   }, [roomId, supabase, setMessages]);
 
-  const addNewMessage = async () => {
-    const {} = await supabase.from('messages').insert({
+  const addNewMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const {} = await supabase.from('messages').insert<Partial<IMessage>>({
       content: chatInputRef.current?.value,
-      author: localStorage.getItem('user'),
-      from_room_id: roomId,
+      author: localStorage.getItem('user')!,
+      from_room_id: roomId!,
     });
   };
 
   return (
-    <div className='flex-[6]'>
-      <div className='flex flex-col h-full'>
+    <div className='flex-[6] h-screen'>
+      <div className='flex flex-col h-full  relative'>
         <ChatWindow
           roomId={roomId}
           messages={messages}

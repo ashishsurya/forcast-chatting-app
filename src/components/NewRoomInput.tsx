@@ -2,7 +2,9 @@ import { useRef, useState } from 'react';
 import supabase from '../supabase';
 import { IRoom } from '../typings';
 
-const NewRoomInput = () => {
+const NewRoomInput: React.FC<{
+  setShowNewRoomCreateInput: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setShowNewRoomCreateInput }) => {
   const inputref = useRef<HTMLInputElement>(null);
 
   const createNewRoom = async (roomName: string) => {
@@ -10,9 +12,13 @@ const NewRoomInput = () => {
       return;
     }
 
-    const {} = await supabase
+    const { error } = await supabase
       .from('rooms')
       .insert<Partial<IRoom>>({ title: roomName });
+
+    if (!error) {
+      setShowNewRoomCreateInput(false);
+    }
   };
 
   return (

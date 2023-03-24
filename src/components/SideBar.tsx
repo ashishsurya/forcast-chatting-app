@@ -32,7 +32,9 @@ const SideBar: React.FC<{
           selectedRoomId={selectedRoomId}
         />
       ))}
-      {showNewRoomCreateInput && <NewRoomInput />}
+      {showNewRoomCreateInput && (
+        <NewRoomInput setShowNewRoomCreateInput={setShowNewRoomCreateInput} />
+      )}
       <button
         className='flex items-center bg-gray-900'
         onClick={() => {

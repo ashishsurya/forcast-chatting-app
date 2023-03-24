@@ -10,7 +10,7 @@ const ChatWindow: React.FC<{
 }> = ({ roomId, messages, setMessages }) => {
   useEffect(() => {
     const channel = supabase
-      .channel('realtime_messages')
+      .channel('supabase_relatime')
       .on(
         'postgres_changes',
         {
@@ -28,7 +28,7 @@ const ChatWindow: React.FC<{
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase, setMessages]);
+  }, [supabase, setMessages, roomId]);
 
   return (
     <div className=' flex-1 rounded-lg w-full'>

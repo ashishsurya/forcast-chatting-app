@@ -23,12 +23,30 @@ const App: React.FC = () => {
     getRooms();
   }, []);
 
+  useEffect(() => {
+    const channel = supabase
+      .channel('supabase_realtime')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'rooms' },
+        (payload) => {
+          setRooms((prev) => [payload.new as IRoom, ...prev]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, setRooms]);
+
   return (
     <div className='flex flex-row h-screen'>
       <SideBar
         rooms={rooms}
         setSelectedRoomId={setSelectedRoomId}
         selectedRoomId={selectedRoomId}
+        setRooms={setRooms}
       />
 
       {selectedRoomId === null ? (

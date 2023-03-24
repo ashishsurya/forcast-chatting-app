@@ -4,8 +4,6 @@ import supabase from '../supabase';
 
 const ChatInput = React.forwardRef(
   ({ addNewMessage }: { addNewMessage: () => Promise<void> }, ref) => {
-    
-
     return (
       <div className='w-full relative border rounded-lg self-end'>
         <input
@@ -16,8 +14,9 @@ const ChatInput = React.forwardRef(
           placeholder='Enter the message.....'
         />
         <button
+          //@ts-ignore
           onClick={addNewMessage}
-          className='absolute right-2 top-1.5 text-gray-700 focus:text-green-500 focus:outline-none'
+          className='absolute right-2 top-1.5 text-gray-700 focus:text-green-500 focus:outline-none disabled:cursor-not-allowed'
         >
           <PaperAirplaneIcon className='w-7 h-7' />
         </button>

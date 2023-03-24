@@ -12,6 +12,7 @@ const MessageBubble: React.FC<{ message: IMessage }> = ({ message }) => {
     >
       <div className='flex items-center justify-between'>
         <p className='text-lg'>{message.content}</p>
+        <div className='w-10'></div>
         <p className='text-xs hover:underline cursor-pointer'>
           {message.author}
         </p>
